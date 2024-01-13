@@ -16,7 +16,7 @@ class HBNBCommand(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self)
-        self.prompt = "(hbnb)"
+        self.prompt = '(hbnb) '
 
     def precmd(self, line):
         """overrides parent precmd method"""
@@ -25,7 +25,6 @@ class HBNBCommand(cmd.Cmd):
         line = line.strip()
         result = re.search(pattern, line)
         if result:
-            import models.interface
             cls_name = result.group(1)
             method = result.group(2)
             arg = result.group(3)
