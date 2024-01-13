@@ -18,7 +18,8 @@ from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """the entry point of the command interpreter"""
-    use_rawinput = os.isatty(sys.stdout.fileno())
+    # use_rawinput = os.isatty(sys.stdout.fileno())
+    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
     __classes = {
             'BaseModel': BaseModel,
             'User': User,
@@ -29,14 +30,16 @@ class HBNBCommand(cmd.Cmd):
             'Review': Review
     }
 
-    def __init__(self):
-        cmd.Cmd.__init__(self)
-        self.prompt = '(hbnb) '
-
     def preloop(self):
         """preloop overriding!!!"""
         if not sys.__stdin__.isatty():
             print('(hbnb)')
+
+    def postcmd(self, stop, line):
+        """precmd overriding method"""
+        if not sys.__stdin__.isatty():
+            print('(hbnb) ', end='')
+        return stop
 
     def precmd(self, line):
         """overrides parent precmd method"""
@@ -122,7 +125,8 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """get executed when press Enter without entering anything"""
-        return False
+        # return False
+        pass
 
     def do_create(self, arg):
         """create instance of class"""
