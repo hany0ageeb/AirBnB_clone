@@ -87,3 +87,8 @@ class FileStorage:
             if class_name == value.__class__.__name__:
                 ret_val.append(str(value))
         return ret_val
+
+
+if __name__ == '__main__':
+    storage = FileStorage()
+    print(storage.all())
