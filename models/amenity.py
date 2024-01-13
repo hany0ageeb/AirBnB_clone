@@ -8,4 +8,4 @@ class Amenity(BaseModel):
     """class Amenity inherits from BaseModel"""
     def __init__(self, *args, **kwargs):
         self.name = ''
-        super().__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
