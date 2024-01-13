@@ -6,8 +6,8 @@ import sys
 import re
 import cmd
 import os
-from services.service import Service, InvalidClassNameError
-from services.service import MissingInstanceIdError
+from models.service import Service, InvalidClassNameError
+from models.service import MissingInstanceIdError
 
 
 class HBNBCommand(cmd.Cmd):
