@@ -39,7 +39,7 @@ class BaseModel:
                     self.__dict__[key] = value
                 elif key == 'id':
                     self.id = str(value)
-    
+
     def __str__(self):
         """should return [<class name>] (<self.id>) <self.__dict__>
         """

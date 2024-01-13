@@ -94,5 +94,5 @@ class TestPlace(unittest.TestCase):
                 msg='__init did not set descriptiuon')
 
     def test_number_rooms_initially_zero(self):
+        """test number_rooms is initially zero"""
         pass
-
