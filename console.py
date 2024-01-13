@@ -6,8 +6,8 @@ import sys
 import re
 import cmd
 import os
-from models.service import Service, InvalidClassNameError
-from models.service import MissingInstanceIdError
+import models.interface
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -17,7 +17,6 @@ class HBNBCommand(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
         self.prompt = "(hbnb)"
-        self.service = Service()
 
     def precmd(self, line):
         """overrides parent precmd method"""
@@ -60,10 +59,13 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, arg):
         """print  the number of instances of a class"""
-        try:
-            print("{}".format(self.service.count(arg)))
-        except InvalidClassNameError as e:
-            print(e)
+        if not arg:
+            print("** class name missing **")
+        elif not hasattr(models.interface, arg):
+            print("** class doesn't exist **")
+        else:
+            objs = storage.findByClassName(arg)
+            print(len(objs))
 
     def help_count(self):
         """print help for count command"""
@@ -108,12 +110,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """create instance of class"""
-        try:
-            instance = self.service.create(arg)
-            if instance:
-                print(instance.id)
-        except InvalidClassNameError as e:
-            print(e)
+        if not arg:
+            print("** class name missing **")
+        elif not hasattr(models.interface, arg):
+            print("** class doesn't exist **")
+        else:
+            cls = getattr(models.interface, arg)
+            obj = cls()
+            obj.save()
+            print(obj.id)
 
     def help_create(self):
         """print help for create command"""
@@ -136,15 +141,19 @@ class HBNBCommand(cmd.Cmd):
         based on the class name and id"""
         args = self.__parseArgs(arg)
         obj_id = None if len(args) < 2 or args[1] == '' else args[1].strip('"')
-        cls_name = None if len(args) <= 0 else args[0]
-        try:
-            instance = self.service.show(cls_name, obj_id)
-            if instance:
-                print(instance)
+        cls_name = None if len(args) <= 0 else args[0].strip('"')
+        if not cls_name:
+            print("** class name missing **")
+        elif not hasattr(models.interface, cls_name):
+            print("** class doesn't exist **")
+        elif not obj_id:
+            print("** instance id missing **")
+        else:
+            obj = storage.find(cls_name, obj_id)
+            if obj:
+                print(obj)
             else:
                 print("** no instance found **")
-        except (InvalidClassNameError, MissingInstanceIdError) as e:
-            print(e)
 
     def help_show(self):
         """Prints help of show command"""
@@ -203,11 +212,14 @@ class HBNBCommand(cmd.Cmd):
         args = self.__parseArgs(arg)
         cls_name = None if len(args) <= 0 else args[0]
         obj_id = None if len(args) < 2 or args[1] == '' else args[1].strip('"')
-        try:
-            if not self.service.destroy(cls_name, obj_id):
-                print("** no instance found **")
-        except (InvalidClassNameError, MissingInstanceIdError) as e:
-            print(e)
+        if not cls_name:
+            print("** class name missing **")
+        elif not hasattr(models.interface, cls_name):
+            print("** class doesn't exist **")
+        elif not obj_id:
+            print("** instance id missing **")
+        elif not storage.destroy(cls_name, obj_id):
+            print("** no instance found **")
 
     def help_destroy(self):
         """Prints destroy command help"""
@@ -227,11 +239,12 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """Prints all string representation of all instances based
         or not on the class name"""
-        cls_name = arg
-        try:
-            print(self.service.all(cls_name))
-        except InvalidClassNameError as e:
-            print(e)
+        if not arg:
+            print(storage.findAll())
+        elif not hasattr(models.interface, arg):
+            print("** class doesn't exist **")
+        else:
+            print(storage.findByClassName(arg))
 
     def help_all(self):
         """Prints all command help"""
@@ -257,32 +270,27 @@ class HBNBCommand(cmd.Cmd):
         length = len(args)
         cls_name = None if length == 0 else args[0].strip('"')
         obj_id = None if length < 2 or args[1] == '' else args[1].strip('"')
-        kw = None
-        if length >= 4:
-            kw = {args[2].strip('"'): args[3].strip('"')}
-        elif length == 3:
-            try:
-                kw = literal_eval(args[2].strip('"'))
-                if not isinstance(kw, dict):
-                    kw = None
-            except ValueError as e:
-                kw = None
+        if not cls_name:
+            print("** class name missing **")
+        elif not hasattr(models.interface, cls_name):
+            print("** class doesn't exist **")
+        elif not obj_id:
+            print("** instance id missing **")
         else:
-            kw = {}
-        try:
-            result = None
-            if kw is not None:
-                result = self.service.update(cls_name, obj_id, **kw)
+            obj = storage.find(cls_name, obj_id)
+            if obj:
+                attribute_name = None if length < 3 else args[2].strip('"')
+                attribute_value = None if length < 4 else args[3].strip('"')
+                if not attribute_name:
+                    print("** attribute name missing **")
+                elif not attribute_value:
+                    print("** value missing **")
+                else:
+                    kw = {attribute_name: attribute_value}
+                    obj.addOrUpdate(**kw)
+                    obj.save()
             else:
-                result = self.service.update(cls_name, obj_id, **{})
-            if not result:
                 print("** no instance found **")
-            elif length < 3:
-                print("** attribute name missing **")
-            elif length < 4 and not kw:
-                print("** value missing **")
-        except (InvalidClassNameError, MissingInstanceIdError) as e:
-            print(e)
 
     def help_update(self):
         """Prints update command help text"""
