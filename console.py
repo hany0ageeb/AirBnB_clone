@@ -6,8 +6,8 @@ import sys
 import re
 import cmd
 import os
+from models.__init__ import storage
 import models.interface
-from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
