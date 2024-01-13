@@ -57,6 +57,7 @@ class FileStorage:
                     FileStorage.__objects[key] = instance
 
     def find(self, class_name, obj_id):
+        """find an object by clas_name and id"""
         key = "{}.{}".format(class_name, obj_id)
         if key in FileStorage.__objects:
             return FileStorage.__objects[key]
@@ -64,6 +65,7 @@ class FileStorage:
             return None
 
     def destroy(self, class_name, obj_id):
+        """destroy an object by classs name and id"""
         key = "{}.{}".format(class_name, obj_id)
         if key in FileStorage.__objects:
             del FileStorage.__objects[key]
@@ -72,12 +74,14 @@ class FileStorage:
         return False
 
     def findAll(self):
+        """find all objects"""
         ret_val = []
         for key, value in FileStorage.__objects.items():
             ret_val.append(str(value))
         return ret_val
 
     def findByClassName(self, class_name):
+        """find by class name"""
         ret_val = []
         for key, value in FileStorage.__objects.items():
             if class_name == value.__class__.__name__:
