@@ -4,6 +4,13 @@
 
 import json
 import os.path
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.amenity import Amenity
 
 
 class FileStorage:
@@ -50,9 +57,18 @@ class FileStorage:
                 data = json.load(fp)
             FileStorage.__objects.clear()
             if data:
-                import models.interface
+                # from models import interface
+                classes = {
+                        'BaseModel': BaseModel,
+                        'User': User,
+                        'Place': Place,
+                        'City': City,
+                        'Review': Review,
+                        'State': State,
+                        'Amenity': Amenity
+                }
                 for key, value in data.items():
-                    cls = getattr(models.interface, value['__class__'])
+                    cls = classes[value['__class__']]
                     instance = cls(**value)
                     FileStorage.__objects[key] = instance
 
@@ -87,8 +103,3 @@ class FileStorage:
             if class_name == value.__class__.__name__:
                 ret_val.append(str(value))
         return ret_val
-
-
-if __name__ == '__main__':
-    storage = FileStorage()
-    print(storage.all())

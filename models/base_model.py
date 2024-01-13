@@ -7,7 +7,6 @@ This module defines a single class BaseModel
 
 import uuid
 from datetime import datetime
-from models import storage
 
 
 class BaseModel:
@@ -50,7 +49,7 @@ class BaseModel:
         """updates the public instance attribute updated_at
         with the current datetime
         """
-        # from models import storage
+        from models import storage
         self.updated_at = datetime.now()
         storage.save()
 

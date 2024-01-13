@@ -7,12 +7,27 @@ import re
 import cmd
 import os
 from models.__init__ import storage
-import models.interface
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     """the entry point of the command interpreter"""
     use_rawinput = os.isatty(sys.stdout.fileno())
+    __classes = {
+            'BaseModel': BaseModel,
+            'User': User,
+            'Place': Place,
+            'State': State,
+            'City': City,
+            'Amenity': Amenity,
+            'Review': Review
+    }
 
     def __init__(self):
         cmd.Cmd.__init__(self)
@@ -38,11 +53,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_clear(self, arg):
         """clear terminal screen"""
-        from os import system, name
-        if name == 'nt':
-            system('cls')
+        if os.name == 'nt':
+            os.system('cls')
         else:
-            system('clear')
+            os.system('clear')
 
     def help_clear(self):
         """print help for cleare command"""
@@ -59,9 +73,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, arg):
         """print  the number of instances of a class"""
         if not arg:
-            print("** class name missing **")
-        elif not hasattr(models.interface, arg):
-            print("** class doesn't exist **")
+            print("0")
         else:
             objs = storage.findByClassName(arg)
             print(len(objs))
@@ -111,11 +123,10 @@ class HBNBCommand(cmd.Cmd):
         """create instance of class"""
         if not arg:
             print("** class name missing **")
-        elif not hasattr(models.interface, arg):
+        elif arg not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
-            cls = getattr(models.interface, arg)
-            obj = cls()
+            obj = HBNBCommand.__classes[arg]()
             obj.save()
             print(obj.id)
 
@@ -143,7 +154,7 @@ class HBNBCommand(cmd.Cmd):
         cls_name = None if len(args) <= 0 else args[0].strip('"')
         if not cls_name:
             print("** class name missing **")
-        elif not hasattr(models.interface, cls_name):
+        elif cls_name not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         elif not obj_id:
             print("** instance id missing **")
@@ -213,7 +224,7 @@ class HBNBCommand(cmd.Cmd):
         obj_id = None if len(args) < 2 or args[1] == '' else args[1].strip('"')
         if not cls_name:
             print("** class name missing **")
-        elif not hasattr(models.interface, cls_name):
+        elif cls_name not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         elif not obj_id:
             print("** instance id missing **")
@@ -240,7 +251,7 @@ class HBNBCommand(cmd.Cmd):
         or not on the class name"""
         if not arg:
             print(storage.findAll())
-        elif not hasattr(models.interface, arg):
+        elif arg not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
             print(storage.findByClassName(arg))
@@ -264,14 +275,13 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, arg):
         """Updates an instance based on the class name and id
         by adding or updating attribute"""
-        from ast import literal_eval
         args = self.__parseArgs(arg)
         length = len(args)
         cls_name = None if length == 0 else args[0].strip('"')
         obj_id = None if length < 2 or args[1] == '' else args[1].strip('"')
         if not cls_name:
             print("** class name missing **")
-        elif not hasattr(models.interface, cls_name):
+        elif cls_name not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         elif not obj_id:
             print("** instance id missing **")
