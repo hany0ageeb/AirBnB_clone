@@ -33,6 +33,11 @@ class HBNBCommand(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.prompt = '(hbnb) '
 
+    def preloop(self):
+        """preloop overriding!!!"""
+        if not sys.__stdin__.isatty():
+            print('(hbnb)')
+
     def precmd(self, line):
         """overrides parent precmd method"""
         pattern = (r'^(..{0,})\.([a-z]{1}[a-zA-Z0-9_]*)'
