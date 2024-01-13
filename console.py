@@ -297,16 +297,22 @@ class HBNBCommand(cmd.Cmd):
         else:
             obj = storage.find(cls_name, obj_id)
             if obj:
-                attribute_name = None if length < 3 else args[2].strip('"')
-                attribute_value = None if length < 4 else args[3].strip('"')
-                if not attribute_name:
-                    print("** attribute name missing **")
-                elif not attribute_value:
-                    print("** value missing **")
-                else:
-                    kw = {attribute_name: attribute_value}
+                if length >= 3 and '{' in args[2] and '}' in args[2]:
+                    from ast import literal_eval
+                    kw = literal_eval(args[2].strip('"'))
                     obj.addOrUpdate(**kw)
                     obj.save()
+                else:
+                    att_name = None if length < 3 else args[2].strip('"')
+                    att_value = None if length < 4 else args[3].strip('"')
+                    if not att_name:
+                        print("** attribute name missing **")
+                    elif not att_value:
+                        print("** value missing **")
+                    else:
+                        kw = {att_name: att_value}
+                        obj.addOrUpdate(**kw)
+                        obj.save()
             else:
                 print("** no instance found **")
 
