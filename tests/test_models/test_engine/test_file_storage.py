@@ -4,6 +4,7 @@
 
 
 import unittest
+from unittest.mock import patch
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 
@@ -48,3 +49,15 @@ class TestFileStorage(unittest.TestCase):
         self.assertTrue(
                 'BaseModel.123-123' in FileStorage._FileStorage__objects,
                 msg='new did not add obj to __objects')
+
+    def test_save(self):
+        """test save method"""
+        from io import StringIO
+        storage = FileStorage()
+        fp = StringIO()
+        obj = BaseModel()
+        obj.id = '123-123'
+        FileStorage._FileStorage__objects['BaseModel.123-123'] = obj
+        with patch('builtins.open', return_value=fp) as p:
+            storage.save()
+            p.assert_called_once()
