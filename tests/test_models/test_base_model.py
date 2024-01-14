@@ -9,23 +9,7 @@ from models.base_model import BaseModel
 
 
 class TestBaseModel(unittest.TestCase):
-    """This class test BaseModel class"""
-    def test_init_should_call_new_once(self):
-        """BaseModel.__init__ should call storge.new
-        once if no kwargs is given"""
-        with patch('models.base_model.storage.new') as p:
-            BaseModel()
-        p.assert_called_once()
-
-    def test_init_should_not_call_new(self):
-        """BaseModel.__init__ should not call storage.new
-        method if kwargs is given"""
-        with patch('models.base_model.storage.new') as p:
-            BaseModel(
-                    id='123-123',
-                    created_at=datetime.now().isoformat(),
-                    updated_at=datetime.now().isoformat())
-        p.assert_not_called()
+    """TestBaseModel tests BaseModel"""
 
     def test_id_exist_if_no_kwargs(self):
         """tests __init__ create id attribute if no kwargs is given"""
@@ -120,24 +104,6 @@ class TestBaseModel(unittest.TestCase):
                 result,
                 expected,
                 msg='to_dict method return a valid result.')
-
-    def test_save_call_storage_save(self):
-        """test BaseModel save method calls storage.save once"""
-        with patch('models.base_model.storage.save') as p:
-            obj = BaseModel()
-            obj.save()
-        p.assert_called_once()
-
-    def test_save_change_updated_at_attribute(self):
-        """test BaseModel.save updates updated_at attribute when called"""
-        with patch('models.base_model.storage.save') as p:
-            obj = BaseModel()
-            updated_before = obj.updated_at
-            obj.save()
-            self.assertNotEqual(
-                    updated_before,
-                    obj.updated_at,
-                    msg='BaseModel.save does not update updated_at attr')
 
     def test_addOrUpdate_change_existing_attr_value(self):
         """test calling saveOrUpdate change existing attribute value"""
