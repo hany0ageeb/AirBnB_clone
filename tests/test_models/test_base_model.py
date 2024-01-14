@@ -16,7 +16,7 @@ class TestBaseModel(unittest.TestCase):
         obj = BaseModel()
         self.assertTrue(
                 hasattr(obj, 'id'),
-                msg=f'BaseModel object lacks id attribute')
+                msg='BaseModel object lacks id attribute')
 
     def test_init_id_is_given_value_using_uuid4_no_kwargs(self):
         """test __init__ assign id a value using uuid4 if not given kwargs"""
