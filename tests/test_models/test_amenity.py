@@ -13,6 +13,7 @@ class TestAmenity(unittest.TestCase):
         self.assertTrue(
                 hasattr(Amenity, 'name'),
                 msg='Amenity.name is not here!')
+
     def test_name_attr_is_str(self):
         """test class attribute name is of type str"""
         self.assertEqual(
