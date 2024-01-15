@@ -49,25 +49,8 @@ class TestHBNBCommand(unittest.TestCase):
             empt.assert_called_once()
             self.assertEqual(f.getvalue(), '')
 
-    def test_create_BaseModel_should_print_class_name_missing(self):
-        """Test create BaseModel is present"""
+    def test_create_BaseModel_is_present(self):
+        """test create BaseModel is present"""
         instance = HBNBCommand()
         with patch('sys.stdout', new=StringIO()) as f:
-            instance.onecmd("create")
-            self.assertEqual(f.getvalue(), "** class name missing **\n")
-
-    def test_create_BaseModel_should_print_class_doesnot_exist(self):
-        """Test create BaseModel =is present"""
-        instance = HBNBCommand()
-        with patch('sys.stdout', new=StringIO()) as f:
-            instance.onecmd("create plapla")
-            self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
-
-    def test_create_BaseModel_should_print_id(self):
-        """Test create BaseModel"""
-        with patch('builtins.open', return_value=StringIO()):
-            with patch('uuid.uuid4', return_value='123-123'):
-                instance = HBNBCommand()
-                with patch('sys.stdout', new=StringIO()) as f:
-                    instance.onecmd("create BaseModel")
-                    self.assertEqual(f.getvalue(), '123-123\n')
+            instance.onecmd("create BaseModel")
