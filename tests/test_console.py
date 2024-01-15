@@ -25,3 +25,17 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             instance.onecmd('EOF')
         self.assertEqual(f.getvalue(), '\n')
+
+    def test_help_present(self):
+        """Test help is present"""
+        # setup
+        instance = HBNBCommand()
+        expected = (
+                "\nDocumented commands (type help <topic>):\n"
+                "========================================\n"
+                "EOF  all  clear  count  create  destroy  "
+                "help  quit  show  update\n\n")
+        # execute
+        with patch('sys.stdout', new=StringIO()) as f:
+            instance.onecmd("help")
+            self.assertEqual(f.getvalue(), expected)
