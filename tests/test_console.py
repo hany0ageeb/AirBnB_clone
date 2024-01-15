@@ -53,4 +53,6 @@ class TestHBNBCommand(unittest.TestCase):
         """test create BaseModel is present"""
         instance = HBNBCommand()
         with patch('sys.stdout', new=StringIO()) as f:
-            instance.onecmd("create BaseModel")
+            with patch('uuid.uuid4', return_value='123-123'):
+                instance.onecmd("create BaseModel")
+            self.assertEqual(f.getvalue(), '123-123\n')
