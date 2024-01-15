@@ -17,3 +17,11 @@ class TestHBNBCommand(unittest.TestCase):
         instance = HBNBCommand()
         with self.assertRaises(SystemExit):
             instance.onecmd("quit")
+
+    def test_EOF_present(self):
+        """test EOF exist"""
+        # setup
+        instance = HBNBCommand()
+        with patch('sys.stdout', new=StringIO()) as f:
+            instance.onecmd('EOF')
+        self.assertEqual(f.getvalue(), '\n')
