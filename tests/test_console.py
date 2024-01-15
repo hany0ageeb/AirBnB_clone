@@ -39,3 +39,12 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             instance.onecmd("help")
             self.assertEqual(f.getvalue(), expected)
+
+    def test_emptyline_present(self):
+        """Test empty line is present"""
+        instance = HBNBCommand()
+        with patch('sys.stdout', new=StringIO()) as f:
+            with patch.object(instance, 'emptyline') as empt:
+                instance.onecmd("\n")
+            empt.assert_called_once()
+            self.assertEqual(f.getvalue(), '')
