@@ -3,6 +3,8 @@
 
 
 import unittest
+from io import StringIO
+from unittest.mock import patch
 from console import HBNBCommand
 
 
@@ -13,5 +15,5 @@ class TestHBNBCommand(unittest.TestCase):
         """tests do_quit present"""
         # setup
         instance = HBNBCommand()
-        # test
-        self.assertTrue(hasattr(instance, 'do_quit'))
+        with self.assertRaises(SystemExit):
+            instance.onecmd("quit")
