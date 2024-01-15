@@ -56,3 +56,17 @@ class TestHBNBCommand(unittest.TestCase):
             with patch('uuid.uuid4', return_value='123-123'):
                 instance.onecmd("create BaseModel")
             self.assertEqual(f.getvalue(), '123-123\n')
+
+    def test_show_BaseModel_is_present(self):
+        """test show BaseModel is present"""
+        instance = HBNBCommand()
+        with patch('sys.stdout', new=StringIO()) as f:
+            instance.onecmd('show BaseModel')
+            self.assertEqual(f.getvalue(), "** instance id missing **\n")
+
+    def test_destroy_BaseModel_is_present(self):
+        """Test destroy BaseModel is present"""
+        instance = HBNBCommand()
+        with patch('sys.stdout', new=StringIO()) as f:
+            instance.onecmd('destroy BaseModel')
+            self.assertEqual(f.getvalue(), "** instance id missing **\n")
