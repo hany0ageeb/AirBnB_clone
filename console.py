@@ -128,6 +128,14 @@ class HBNBCommand(cmd.Cmd):
         # return False
         pass
 
+    def do_help(self, arg):
+        """help command"""
+        print("\nDocumented commands (type help <topic>):")
+        print("========================================")
+        print((
+            "EOF  all  clear  count  create  destroy  "
+            "help  quit  show  update\n"))
+
     def do_create(self, arg):
         """create instance of class"""
         if not arg:
