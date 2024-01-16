@@ -4,7 +4,7 @@
 
 import unittest
 from io import StringIO
-from unittest.mock import patch
+from unittest.mock import patch, mock_open
 from console import HBNBCommand
 
 
@@ -51,11 +51,12 @@ class TestHBNBCommand(unittest.TestCase):
 
     def test_create_BaseModel_is_present(self):
         """test create BaseModel is present"""
-        instance = HBNBCommand()
-        with patch('sys.stdout', new=StringIO()) as f:
-            with patch('uuid.uuid4', return_value='123-123'):
-                instance.onecmd("create BaseModel")
-            self.assertEqual(f.getvalue(), '123-123\n')
+        with patch('builtins.open', mock_open(read_data="{}")):
+            instance = HBNBCommand()
+            with patch('sys.stdout', new=StringIO()) as f:
+                with patch('uuid.uuid4', return_value='123-123'):
+                    instance.onecmd("create BaseModel")
+                    self.assertEqual(f.getvalue(), '123-123\n')
 
     def test_show_BaseModel_is_present(self):
         """test show BaseModel is present"""
@@ -70,3 +71,10 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             instance.onecmd('destroy BaseModel')
             self.assertEqual(f.getvalue(), "** instance id missing **\n")
+
+    def test_update_BaseModel_is_present(self):
+        """test update BaseModel is present"""
+        instance = HBNBCommand()
+        with patch('sys.stdout', new=StringIO()) as f:
+            instance.onecmd('update BaseModel')
+            self.assertEqual(f.getvalue(), '** instance id missing **\n')
