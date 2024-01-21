@@ -1,12 +1,12 @@
 footer {
-    height: 60px;
+    grid-row: 4;
     background-color: white;
-    width: 100%;
+    height: 60px;
+    display: grid;
     border-top: 1px #CCCCCC;
-    position: absolute;
-    bottom: 0;
+    width: 100%;
 }
 footer p {
     text-align: center;
-    line-height: 1.9rem;
+    margin: auto;
 }

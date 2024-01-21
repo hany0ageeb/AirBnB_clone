@@ -1,0 +1,21 @@
+.filter{
+    height: 70px;
+    width: 100%;
+    border: 1px #DDDDDD;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.filter button {
+    font-size: 18px;
+    background-color:  #FF5A5F;
+    color: #FFFFFF;
+    height: 48px;
+    width: 100%;
+    border: 0;
+    border-radius: 4px;
+    grid-column: 2;
+}
+.filter button:hover {
+    opacity: 90%;
+}

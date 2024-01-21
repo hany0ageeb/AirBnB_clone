@@ -1,9 +1,18 @@
-body {
+body, html {
     margin: 0;
     padding: 0;
+    height: 100%;
+    width: 100%;
+}
+.page-container {
+    display: grid;
+    grid-template-rows: auto-fit auto-fit auto-fit;
     font-size: 14px;
-    color: #484848;
-    font: 14px Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    position: relative;
-    height: 100vh;
+    font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 100%;
+    width: 100%;
+}
+.container {
+    grid-row: 2;
+    height: 75vh;
 }
