@@ -1,0 +1,19 @@
+header {
+    background-color: #FF0000;
+    height: 70px;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: repeat(auto, 2);
+    position: absolute;
+    width: 100%;
+    top: 0;
+    grid-template-columns: 20px 1fr 2fr;
+    align-items: center;
+}
+.logo {
+    background-image: url("../images/logo.png");
+    background-repeat: none;
+    width: 30px;
+    height: 30px;
+    grid-column: 2;
+}
