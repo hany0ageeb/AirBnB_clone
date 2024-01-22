@@ -11,6 +11,7 @@ body {
     grid-row: 2;
     display: grid;
     position: absolute;
+    grid-template-rows: 1fr 2fr;
     top: 71px;
     width: 100%;
     max-width: 1000px;
