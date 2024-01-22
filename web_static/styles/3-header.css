@@ -1,5 +1,5 @@
 header {
-    background-color: #FF0000;
+    background-color: white;
     height: 70px;
     grid-row: 1;
     display: grid;
@@ -9,6 +9,7 @@ header {
     top: 0;
     grid-template-columns: 20px 1fr 2fr;
     align-items: center;
+    border-bottom: 1px #CCCCCC;
 }
 .logo {
     background-image: url("../images/logo.png");
